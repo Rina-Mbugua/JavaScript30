@@ -59,7 +59,23 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  window.addEventListener('keydown', function (e) { // this listens for the keydown and returns and event object (e) which is info about the key (see keycode.info)
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); // template literal (` `). inside the ${} we can include the variable e.keycode. this is the attribute selector[] 
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
+    if(!audio) return; // this stops the function from running all together
+    audio.currentTime = 0; // this will rewind the sound to the start. so that you can play it over again with a delay 
+    audio.play();
+    key.classList.add('playing');
 
+  });
+
+  function removeTransistion(e) {
+    if(e.propertyName !== 'transform') return;
+    e.target.classList.remove('playing');
+  }
+
+  const keys = Array.from(document.querySelectorAll('.keys'));
+  keys.forEach(key => key.addEventListener('transitionend', removeTransistion));
 </script>
 
 
